@@ -24,9 +24,29 @@
   <button onclick="alg.value = 'RURRRURUURRR';">Sune</button>
   <button onclick="alg.value = 'UUDDLLRRFFBB';">Pons Asinorum</button>
   <br>
-  <input id="alg" style="width: 90%" value="RURRRUUURRRFRRUUURRRUUURURRRFFF"/>
-  <br>
+  <input id="alg" style="width: 80%" value="RURRRUUURRRFRRUUURRRUUURURRRFFF"/>
   <button id="apply">Apply</button>
+  <br>
+  <button onclick="alg.value = 'U'; apply();">U</button>
+  <button onclick="alg.value = 'L'; apply();">L</button>
+  <button onclick="alg.value = 'F'; apply();">F</button>
+  <button onclick="alg.value = 'R'; apply();">R</button>
+  <button onclick="alg.value = 'B'; apply();">B</button>
+  <button onclick="alg.value = 'D'; apply();">D</button>
+  <br>
+  <button onclick="alg.value = 'UUU'; apply();">U'</button>
+  <button onclick="alg.value = 'LLL'; apply();">L'</button>
+  <button onclick="alg.value = 'FFF'; apply();">F'</button>
+  <button onclick="alg.value = 'RRR'; apply();">R'</button>
+  <button onclick="alg.value = 'BBB'; apply();">B'</button>
+  <button onclick="alg.value = 'DDD'; apply();">D'</button>
+  <br>
+  <button onclick="alg.value = 'UU'; apply();">U2</button>
+  <button onclick="alg.value = 'LL'; apply();">L2</button>
+  <button onclick="alg.value = 'FF'; apply();">F2</button>
+  <button onclick="alg.value = 'RR'; apply();">R2</button>
+  <button onclick="alg.value = 'BB'; apply();">B2</button>
+  <button onclick="alg.value = 'DD'; apply();">D2</button>
 <hr>
 
 <select id="puzzleSelect">
@@ -45,6 +65,7 @@
 <script src="ksolvePuzzle.js"></script>
 <script src="puzzles/puzzles.js"></script>
 <script>
+var apply;
 var init = function() {
   puzzleName = document.getElementById("puzzleSelect").value;
   var kPuzzle = new ksolvePuzzle(puzzles[puzzleName].def);
@@ -60,8 +81,7 @@ var init = function() {
 
   updateView();
 
-  document.getElementById("apply").onclick = function() {
-    console.log(puzzleName);
+  apply = function() {
     try {
       kPuzzle.applyAlg(document.getElementById("alg").value.split(""));
     } catch (e) {
@@ -69,6 +89,7 @@ var init = function() {
     }
     updateView();
   };
+  document.getElementById("apply").onclick = apply;
 }
 
 document.getElementById("puzzleSelect").addEventListener("change", init);
