@@ -1,0 +1,110 @@
+Name pyram
+
+# Pyraminx
+# Lucas Garron
+# 2015-07-06
+# [Brackets] denote orientation sticker
+# CENTERS U[F] L[F] R[F] B[L] (orientation is clockwise)
+# TIPS U[F] L[F] R[F] B[L] (orientation is clockwise)
+# EDGES UL[F] UR[F] UB[R] DF[D] DR[D] DL[D]
+
+Set CENTERS 4 3
+Set TIPS 4 3
+Set EDGES 6 2
+
+Solved
+CENTERS
+1 2 3 4
+TIPS
+1 2 3 4
+EDGES
+1 2 3 4 5 6
+End
+
+Move U
+CENTERS
+1 2 3 4
+1 0 0 0
+TIPS
+1 2 3 4
+1 0 0 0
+EDGES
+2 3 1 4 5 6
+1 0 1 0 0 0
+End
+
+Move L
+CENTERS
+1 2 3 4
+0 1 0 0
+TIPS
+1 2 3 4
+0 1 0 0
+EDGES
+6 2 3 1 5 4
+1 0 0 0 0 1
+End
+
+Move R
+CENTERS
+1 2 3 4
+0 0 1 0
+TIPS
+1 2 3 4
+0 0 1 0
+EDGES
+1 4 3 5 2 6
+0 0 0 1 1 0
+End
+
+Move B
+CENTERS
+1 2 3 4
+0 0 0 1
+TIPS
+1 2 3 4
+0 0 0 1
+EDGES
+1 2 5 4 6 3
+0 0 0 0 1 1
+End
+
+Move u
+CENTERS
+1 2 3 4
+TIPS
+1 2 3 4
+1 0 0 0
+EDGES
+1 2 3 4 5 6
+End
+
+Move l
+CENTERS
+1 2 3 4
+TIPS
+1 2 3 4
+0 1 0 0
+EDGES
+1 2 3 4 5 6
+End
+
+Move r
+CENTERS
+1 2 3 4
+TIPS
+1 2 3 4
+0 0 1 0
+EDGES
+1 2 3 4 5 6
+End
+
+Move b
+CENTERS
+1 2 3 4
+TIPS
+1 2 3 4
+0 0 0 1
+EDGES
+1 2 3 4 5 6
+End

@@ -2,7 +2,7 @@ var fs = require("fs");
 
 var OUTFILE = (__dirname + "/" + "puzzles.js");
 
-var puzzleNames = ["222", "333"];
+var puzzleNames = ["222", "333", "pyram"];
 var puzzles = {};
 
 for (var i in puzzleNames) {

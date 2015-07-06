@@ -34,12 +34,12 @@
   <button onclick="alg.value = 'B'; apply();">B</button>
   <button onclick="alg.value = 'D'; apply();">D</button>
   <br>
-  <button onclick="alg.value = 'UUU'; apply();">U'</button>
-  <button onclick="alg.value = 'LLL'; apply();">L'</button>
-  <button onclick="alg.value = 'FFF'; apply();">F'</button>
-  <button onclick="alg.value = 'RRR'; apply();">R'</button>
-  <button onclick="alg.value = 'BBB'; apply();">B'</button>
-  <button onclick="alg.value = 'DDD'; apply();">D'</button>
+  <button onclick="alg.value = ((puzzleSelect.value === 'pyram') ? 'UU' : 'UUU'); apply();">U'</button>
+  <button onclick="alg.value = ((puzzleSelect.value === 'pyram') ? 'LL' : 'LLL'); apply();">L'</button>
+  <button onclick="alg.value = ((puzzleSelect.value === 'pyram') ? 'FF' : 'FFF'); apply();">F'</button>
+  <button onclick="alg.value = ((puzzleSelect.value === 'pyram') ? 'RR' : 'RRR'); apply();">R'</button>
+  <button onclick="alg.value = ((puzzleSelect.value === 'pyram') ? 'BB' : 'BBB'); apply();">B'</button>
+  <button onclick="alg.value = ((puzzleSelect.value === 'pyram') ? 'DD' : 'DDD'); apply();">D'</button>
   <br>
   <button onclick="alg.value = 'UU'; apply();">U2</button>
   <button onclick="alg.value = 'LL'; apply();">L2</button>
@@ -52,6 +52,7 @@
 <select id="puzzleSelect">
   <option value="222">222</option>
   <option value="333" selected="true">333</option>
+  <option value="pyram">pyram</option>
 </select>
 <br>
 
