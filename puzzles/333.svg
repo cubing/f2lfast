@@ -94,7 +94,7 @@
     <use id="EDGES-l11-o0" xlink:href="#sticker" transform="translate(5,  7)" style="fill: yellow"/>
     <use id="EDGES-l11-o1" xlink:href="#sticker" transform="translate(7,  5)" style="fill: red"/>
 
-    <!-- Centers -->
+    <!-- CENTERS -->
     <use id="CENTERS-l0-o0" xlink:href="#sticker" transform="translate(4,  1)" style="fill: white"/>
     <use id="CENTERS-l1-o0" xlink:href="#sticker" transform="translate(1,  4)" style="fill: orange"/>
     <use id="CENTERS-l2-o0" xlink:href="#sticker" transform="translate(4,  4)" style="fill: green"/>
