@@ -116,15 +116,15 @@
 </svg>
 
 <script src="ksolve_def_parser.js"></script>
-<script src="kSolvePuzzle.js"></script>
+<script src="ksolvePuzzle.js"></script>
 <script>
-  var kSolve333 = new kSolvePuzzle(def["333"]);
-  kSolve333.setSVGElement(document.getElementById("puzzle"));
-  kSolve333.draw();
+  var ksolve333 = new ksolvePuzzle(def["333"]);
+  ksolve333.setSVGElement(document.getElementById("puzzle"));
+  ksolve333.draw();
 
   document.getElementById("apply").addEventListener("click", function() {
-    kSolve333.applyAlg(document.getElementById("alg").value.split(""));
-    kSolve333.draw();
+    ksolve333.applyAlg(document.getElementById("alg").value.split(""));
+    ksolve333.draw();
   })
 </script>
 </html>

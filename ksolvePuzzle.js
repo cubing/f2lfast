@@ -6,13 +6,13 @@ def["333"] = "Name 3x3x3\n\n# Kirjava\n# CORNERS URF, ULF, ULB, URB, DRF, DLF, D
 
 // By convention, methods and variables ending in underscores are private.
 // Be very wary of using them for anything but debugging.
-var kSolvePuzzle = function(definition) {
+var ksolvePuzzle = function(definition) {
   this.parser_ = ksolve_def_parser.parse(definition);
   this.state_ = this.newSolvedState_();
   this.stateSwap_ = this.newSolvedState_(); // Avoid allocations.
 };
 
-kSolvePuzzle.prototype = {
+ksolvePuzzle.prototype = {
   newSolvedState_: function() {
     var state = {};
     for (var set in this.parser_.sets) {
