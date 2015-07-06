@@ -1,0 +1,130 @@
+<html>
+<head>
+</head>
+<body>
+
+<input id="alg" style="width: 90%" value="RURRRUUURRRFRRUUURRRUUURURRRFFF"/>
+<br>
+<button id="apply">Apply</button>
+<br>
+
+<svg id="puzzle" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="410" height="310">
+  <defs>
+  </defs>
+  <title>333</title>
+  <defs>
+    <g id="sticker">
+        <rect x="0" y="0" width="1" height="1" stroke="black" stroke-width="0.04px" />
+    </g>
+  </defs>
+
+<!--        0 1 2 3 4 5 6 7 8 9 10 11  -->
+<!--        | | | | | | | | | | | |<-  -->
+<!--    0 -       . . .                -->
+<!--    1 -       . . .                -->
+<!--    2 -       . . .                -->
+<!--    3 - . . . . . . . . . . . .    -->
+<!--    4 - . . . . . . . . . . . .    -->
+<!--    5 - . . . . . . . . . . . .    -->
+<!--    6 -       . . .                -->
+<!--    7 -       . . .                -->
+<!--    8 -       . . .                -->
+
+  <g id="puzzle" transform="translate(5, 5) scale(30)">
+    <!-- CORNERS -->
+    <use id="CORNERS-l0-o0" xlink:href="#sticker" transform="translate(5,  2)" style="fill: white"/>
+    <use id="CORNERS-l0-o1" xlink:href="#sticker" transform="translate(5,  3)" style="fill: green"/>
+    <use id="CORNERS-l0-o2" xlink:href="#sticker" transform="translate(6,  3)" style="fill: red"/>
+
+    <use id="CORNERS-l1-o0" xlink:href="#sticker" transform="translate(3,  2)" style="fill: white"/>
+    <use id="CORNERS-l1-o1" xlink:href="#sticker" transform="translate(2,  3)" style="fill: orange"/>
+    <use id="CORNERS-l1-o2" xlink:href="#sticker" transform="translate(3,  3)" style="fill: green"/>
+
+    <use id="CORNERS-l2-o0" xlink:href="#sticker" transform="translate(3,  0)" style="fill: white"/>
+    <use id="CORNERS-l2-o1" xlink:href="#sticker" transform="translate(11, 3)" style="fill: blue"/>
+    <use id="CORNERS-l2-o2" xlink:href="#sticker" transform="translate(0,  3)" style="fill: orange"/>
+
+    <use id="CORNERS-l3-o0" xlink:href="#sticker" transform="translate(5,  0)" style="fill: white"/>
+    <use id="CORNERS-l3-o1" xlink:href="#sticker" transform="translate(8,  3)" style="fill: red"/>
+    <use id="CORNERS-l3-o2" xlink:href="#sticker" transform="translate(9,  3)" style="fill: blue"/>
+
+    <use id="CORNERS-l4-o0" xlink:href="#sticker" transform="translate(5,  6)" style="fill: yellow"/>
+    <use id="CORNERS-l4-o1" xlink:href="#sticker" transform="translate(6,  5)" style="fill: red"/>
+    <use id="CORNERS-l4-o2" xlink:href="#sticker" transform="translate(5,  5)" style="fill: green"/>
+
+    <use id="CORNERS-l5-o0" xlink:href="#sticker" transform="translate(3,  6)" style="fill: yellow"/>
+    <use id="CORNERS-l5-o1" xlink:href="#sticker" transform="translate(3,  5)" style="fill: green"/>
+    <use id="CORNERS-l5-o2" xlink:href="#sticker" transform="translate(2,  5)" style="fill: orange"/>
+
+    <use id="CORNERS-l6-o0" xlink:href="#sticker" transform="translate(3,  8)" style="fill: yellow"/>
+    <use id="CORNERS-l6-o1" xlink:href="#sticker" transform="translate(0,  5)" style="fill: orange"/>
+    <use id="CORNERS-l6-o2" xlink:href="#sticker" transform="translate(11, 5)" style="fill: blue"/>
+
+    <use id="CORNERS-l7-o0" xlink:href="#sticker" transform="translate(5,  8)" style="fill: yellow"/>
+    <use id="CORNERS-l7-o1" xlink:href="#sticker" transform="translate(9,  5)" style="fill: blue"/>
+    <use id="CORNERS-l7-o2" xlink:href="#sticker" transform="translate(8,  5)" style="fill: red"/>
+
+    <!-- EDGES -->
+    <use id="EDGES-l0-o0"  xlink:href="#sticker" transform="translate(4,  2)" style="fill: white"/>
+    <use id="EDGES-l0-o1"  xlink:href="#sticker" transform="translate(4,  3)" style="fill: green"/>
+
+    <use id="EDGES-l1-o0"  xlink:href="#sticker" transform="translate(3,  1)" style="fill: white"/>
+    <use id="EDGES-l1-o1"  xlink:href="#sticker" transform="translate(1,  3)" style="fill: orange"/>
+
+    <use id="EDGES-l2-o0"  xlink:href="#sticker" transform="translate(4,  0)" style="fill: white"/>
+    <use id="EDGES-l2-o1"  xlink:href="#sticker" transform="translate(10, 3)" style="fill: blue"/>
+
+    <use id="EDGES-l3-o0"  xlink:href="#sticker" transform="translate(5,  1)" style="fill: white"/>
+    <use id="EDGES-l3-o1"  xlink:href="#sticker" transform="translate(7,  3)" style="fill: red"/>
+
+    <use id="EDGES-l4-o0"  xlink:href="#sticker" transform="translate(6,  4)" style="fill: red"/>
+    <use id="EDGES-l4-o1"  xlink:href="#sticker" transform="translate(5,  4)" style="fill: green"/>
+
+    <use id="EDGES-l5-o0"  xlink:href="#sticker" transform="translate(2,  4)" style="fill: orange"/>
+    <use id="EDGES-l5-o1"  xlink:href="#sticker" transform="translate(3,  4)" style="fill: green"/>
+
+    <use id="EDGES-l6-o0"  xlink:href="#sticker" transform="translate(0,  4)" style="fill: orange"/>
+    <use id="EDGES-l6-o1"  xlink:href="#sticker" transform="translate(11, 4)" style="fill: blue"/>
+
+    <use id="EDGES-l7-o0"  xlink:href="#sticker" transform="translate(8,  4)" style="fill: red"/>
+    <use id="EDGES-l7-o1"  xlink:href="#sticker" transform="translate(9,  4)" style="fill: blue"/>
+
+    <use id="EDGES-l8-o0"  xlink:href="#sticker" transform="translate(4,  6)" style="fill: yellow"/>
+    <use id="EDGES-l8-o1"  xlink:href="#sticker" transform="translate(4,  5)" style="fill: green"/>
+
+    <use id="EDGES-l9-o0"  xlink:href="#sticker" transform="translate(3,  7)" style="fill: yellow"/>
+    <use id="EDGES-l9-o1"  xlink:href="#sticker" transform="translate(1,  5)" style="fill: orange"/>
+
+    <use id="EDGES-l10-o0" xlink:href="#sticker" transform="translate(4,  8)" style="fill: yellow"/>
+    <use id="EDGES-l10-o1" xlink:href="#sticker" transform="translate(10, 5)" style="fill: blue"/>
+
+    <use id="EDGES-l11-o0" xlink:href="#sticker" transform="translate(5,  7)" style="fill: yellow"/>
+    <use id="EDGES-l11-o1" xlink:href="#sticker" transform="translate(7,  5)" style="fill: red"/>
+
+    <!-- Centers -->
+    <use id="CENTERS-l0-o0" xlink:href="#sticker" transform="translate(4,  1)" style="fill: white"/>
+    <use id="CENTERS-l1-o0" xlink:href="#sticker" transform="translate(1,  4)" style="fill: orange"/>
+    <use id="CENTERS-l2-o0" xlink:href="#sticker" transform="translate(4,  4)" style="fill: green"/>
+    <use id="CENTERS-l3-o0" xlink:href="#sticker" transform="translate(7,  4)" style="fill: red"/>
+    <use id="CENTERS-l4-o0" xlink:href="#sticker" transform="translate(10, 4)" style="fill: blue"/>
+    <use id="CENTERS-l5-o0" xlink:href="#sticker" transform="translate(4,  7)" style="fill: yellow"/>
+  </g>
+
+</svg>
+
+<script src="ksolve_def_parser.js"></script>
+<script src="kSolvePuzzle.js"></script>
+<script>
+  var kSolve333 = new kSolvePuzzle(def["333"]);
+
+  // kSolve333.applyAlg("RURRRUUURRRFRRUUURRRUUURURRRFFF".split(""));
+  // kSolve333.applyAlg("FURUUURRRFFF".split(""));
+  kSolve333.setSVGElement(document.getElementById("puzzle"));
+  kSolve333.draw();
+
+  document.getElementById("apply").addEventListener("click", function() {
+    kSolve333.applyAlg(document.getElementById("alg").value.split(""));
+    kSolve333.draw();
+  })
+</script>
+</html>
