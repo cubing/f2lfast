@@ -1,17 +1,33 @@
 <html>
 <head>
+  <title>ksolve-js-svg</title>
+  <style>
+    html {
+      text-align: center;
+      background: rgb(255, 245, 235);
+      margin: 1em;
+    }
+    body {
+      min-width: 500px;
+      width: 50%;
+      background: white;
+      margin: -1px auto;
+      padding: 0.5em;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    }
+  </style>
 </head>
 <body>
 
-<button onclick="alg.value = 'LLLURRRFFFULLUULLLUUULUUDRRRDDDFFRRUUU';">Cube in Cube in Cube</button>
-<button onclick="alg.value = 'RURRRUUURRRFRRUUURRRUUURURRRFFF';">T-Perm</button>
-<button onclick="alg.value = 'RURRRURUURRR';">Sune</button>
-<input id="alg" style="width: 90%" value="RURRRUUURRRFRRUUURRRUUURURRRFFF"/>
-<br>
-<button id="apply">Apply</button>
-<br>
-
-<svg id="puzzle" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="410" height="310">
+  <button onclick="alg.value = 'LLLURRRFFFULLUULLLUUULUUDRRRDDDFFRRUUU';">Cube in Cube in Cube</button>
+  <button onclick="alg.value = 'RURRRUUURRRFRRUUURRRUUURURRRFFF';">T-Perm</button>
+  <button onclick="alg.value = 'RURRRURUURRR';">Sune</button>
+  <br>
+  <input id="alg" style="width: 90%" value="RURRRUUURRRFRRUUURRRUUURURRRFFF"/>
+  <br>
+  <button id="apply">Apply</button>
+<hr>
+<svg id="puzzle" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="490" height="370">
   <defs>
   </defs>
   <title>333</title>
@@ -33,7 +49,7 @@
 <!--    7 -       . . .                -->
 <!--    8 -       . . .                -->
 
-  <g id="puzzle" transform="translate(5, 5) scale(30)">
+  <g id="puzzle" transform="translate(5, 5) scale(40)">
     <!-- CORNERS -->
     <use id="CORNERS-l0-o0" xlink:href="#sticker" transform="translate(5,  2)" style="fill: white"/>
     <use id="CORNERS-l0-o1" xlink:href="#sticker" transform="translate(5,  3)" style="fill: green"/>
@@ -115,12 +131,16 @@
 
 </svg>
 
+<hr>
+<textarea id="state" style="width: 50%; height: 20%"></textarea>
+
 <script src="ksolve_def_parser.js"></script>
 <script src="ksolvePuzzle.js"></script>
 <script>
   var ksolve333 = new ksolvePuzzle(def["333"]);
   ksolve333.setSVGElement(document.getElementById("puzzle"));
   ksolve333.draw();
+  document.getElementById("state").textContent = JSON.stringify(ksolve333.getState());
 
   document.getElementById("apply").addEventListener("click", function() {
     ksolve333.applyAlg(document.getElementById("alg").value.split(""));
