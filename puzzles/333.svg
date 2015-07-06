@@ -23,7 +23,7 @@
 <!--    7 -       . . .                -->
 <!--    8 -       . . .                -->
 
-  <g id="puzzle" transform="translate(5, 5) scale(30)">
+  <g id="puzzle" transform="translate(5, 5) scale(40)">
     <!-- CORNERS -->
     <use id="CORNERS-l0-o0" xlink:href="#sticker" transform="translate(5,  2)" style="fill: white"/>
     <use id="CORNERS-l0-o1" xlink:href="#sticker" transform="translate(5,  3)" style="fill: green"/>

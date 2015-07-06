@@ -1,9 +1,5 @@
 "use strict";
 
-var def = {};
-def["222"] = "Name 2x2\n\n# def-file by Kåre Krig\n# CORNERS: UBL UBR UFR UFL DBR DFR DFL\n# DBL is fixed. No B,Loc,D moves.\n\nSet CORNERS 7 3\n\nSolved\nCORNERS\n1 2 3 4 5 6 7\nEnd\n\nMove U\nCORNERS\n4 1 2 3 5 6 7\nEnd\n\nMove R\nCORNERS\n1 3 6 4 2 5 7\n0 2 1 0 1 2 0\nEnd\n\nMove F\nCORNERS\n1 2 4 7 5 3 6\n0 0 2 1 0 1 2\nEnd";
-def["333"] = "Name 3x3x3\n\n# Kirjava\n# CORNERS URF, ULF, ULB, URB, DRF, DLF, DLB, DRB\n# EDGES UF UL UB UR FR FL BL BR DF DL DB DR\n\nSet CORNERS 8 3\nSet EDGES 12 2\n\nSolved\nCORNERS\n1 2 3 4 5 6 7 8\nEDGES\n1 2 3 4 5 6 7 8 9 10 11 12\nEnd\n\nMove U\nCORNERS\n4 1 2 3 5 6 7 8\nEDGES\n4 1 2 3 5 6 7 8 9 10 11 12\nEnd\n\nMove R\nCORNERS\n5 2 3 1 8 6 7 4\n1 0 0 2 2 0 0 1\nEDGES\n1 2 3 5 12 6 7 4 9 10 11 8\n0 0 0 1 1 0 0 1 0 0 0 1\nEnd\n\nMove F\nCORNERS\n2 6 3 4 1 5 7 8\n2 1 0 0 1 2 0 0\nEDGES\n6 2 3 4 1 9 7 8 5 10 11 12\nEnd\n\nMove D\nCORNERS\n1 2 3 4 6 7 8 5\nEDGES\n1 2 3 4 5 6 7 8 10 11 12 9\nEnd\n\nMove L\nCORNERS\n1 3 7 4 5 2 6 8\n0 2 1 0 0 1 2 0\nEDGES\n1 7 3 4 5 2 10 8 9 6 11 12\n0 1 0 0 0 1 1 0 0 1 0 0\nEnd\n\nMove B\nCORNERS\n1 2 4 8 5 6 3 7\n0 0 2 1 0 0 1 2\nEDGES\n1 2 8 4 5 6 3 11 9 10 7 12\nEnd";
-
 // By convention, methods and variables ending in underscores are private.
 // Be very wary of using them for anything but debugging.
 var ksolvePuzzle = function(definition) {
@@ -65,6 +61,9 @@ ksolvePuzzle.prototype = {
 
   applyMove: function(moveString) {
     var move = this.parser_.moves[moveString];
+    if (typeof move === "undefined") {
+      throw new Error("Undefined move for puzzle (" + this.parser_.name + "): " + moveString);
+    }
 
     for (var set in this.parser_.sets) {
 
