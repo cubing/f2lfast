@@ -3,6 +3,9 @@
 </head>
 <body>
 
+<button onclick="alg.value = 'LLLURRRFFFULLUULLLUUULUUDRRRDDDFFRRUUU';">Cube in Cube in Cube</button>
+<button onclick="alg.value = 'RURRRUUURRRFRRUUURRRUUURURRRFFF';">T-Perm</button>
+<button onclick="alg.value = 'RURRRURUURRR';">Sune</button>
 <input id="alg" style="width: 90%" value="RURRRUUURRRFRRUUURRRUUURURRRFFF"/>
 <br>
 <button id="apply">Apply</button>
@@ -116,9 +119,6 @@
 <script src="kSolvePuzzle.js"></script>
 <script>
   var kSolve333 = new kSolvePuzzle(def["333"]);
-
-  // kSolve333.applyAlg("RURRRUUURRRFRRUUURRRUUURURRRFFF".split(""));
-  // kSolve333.applyAlg("FURUUURRRFFF".split(""));
   kSolve333.setSVGElement(document.getElementById("puzzle"));
   kSolve333.draw();
 
