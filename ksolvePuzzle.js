@@ -59,8 +59,12 @@ ksolvePuzzle.prototype = {
     }
   },
 
-  applyMove: function(moveString) {
-    var move = this.parser_.moves[moveString];
+  applyMove: function(move) {
+    var wasString = false;
+    if (typeof move === "string") {
+      move = this.parser_.moves[move];
+      wasString = true;
+    }
     if (typeof move === "undefined") {
       throw new Error("Undefined move for puzzle (" + this.parser_.name + "): " + moveString);
     }
@@ -68,7 +72,7 @@ ksolvePuzzle.prototype = {
     for (var set in this.parser_.sets) {
 
       for (var loc = 0; loc < this.parser_.sets[set].num; loc++) {
-        var prevLoc = move[set].permutation[loc] - 1;
+        var prevLoc = move[set].permutation[loc] - (wasString ? 1 : 0);
 
         this.stateSwap_[set].permutation[loc] = this.state_[set].permutation[prevLoc];
 
@@ -82,9 +86,31 @@ ksolvePuzzle.prototype = {
     this.stateSwap_ = oldState;
   },
 
-  applyAlg: function(moves) {
-    for (var i in moves) {
-      this.applyMove(moves[i]);
+  // invertState: {},
+
+  serializeStateToKsolve: function() {
+    var output = ""
+    for (var set in this.parser_.sets) {
+      output += set + "\n";
+      // output += this.state_[set].permutation.map(function(x) {return x + 1;}).join(" ") + "\n";
+      output += this.state_[set].permutation.join(" ") + "\n";
+      output += this.state_[set].orientation.join(" ") + "\n";
+    }
+    output = output.slice(0, output.length - 1); // Trim last newline.
+    return output;
+  },
+
+  printState: function() {
+    console.log(this.serializeStateToKsolve());
+  },
+
+  applyAlg: function(algString) {
+    var a = alg.cube.fromString(algString);
+    for (var i in a) {
+      var amount = (a[i].amount + 4) % 4;
+      for (var j = 0; j < amount; j++) {
+        this.applyMove(a[i].base);
+      }
     }
   }
 }
