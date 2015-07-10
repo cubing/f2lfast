@@ -1,16 +1,20 @@
-var fs = require("fs");
-var vm = require("vm");
+try {
+  var fs = require("fs");
+  var vm = require("vm");
 
-function include(path) {
-    var code = fs.readFileSync(path, 'utf-8');
-    vm.runInThisContext(code, path);
+  function include(path) {
+      var code = fs.readFileSync(path, 'utf-8');
+      vm.runInThisContext(code, path);
+  }
+
+  include("ksolve_def_parser.js");
+  include("ksolvePuzzle.js");
+  include("puzzles/puzzles.js");
+  include("lib/alg_jison.js");
+  include("lib/alg.js");
+} catch (e) {
+  console.log("I hope this is not running in node.");
 }
-
-include("ksolve_def_parser.js");
-include("ksolvePuzzle.js");
-include("puzzles/puzzles.js");
-include("lib/alg_jison.js");
-include("lib/alg.js");
 
 /*****************/
 
@@ -73,6 +77,8 @@ var triggers = {
     "R  U  R'": toMove("R  U  R'"),
     "R  U2 R'": toMove("R  U2 R'"),
     "R  U' R'": toMove("R  U' R'"),
+    "R' F R F'": toMove("R' F R F'"),
+    "F R' F' R": toMove("F R' F' R"),
     "F' U' F ": toMove("F' U' F "),
     "F' U2 F ": toMove("F' U2 F "),
     "F' U  F ": toMove("F' U  F ")
@@ -135,6 +141,62 @@ function unsolvedF2LPairs(state) {
   return pairs;
 }
 
+function isOLLSolved(state) {
+  var cp = state.CORNERS.permutation;
+  var co = state.CORNERS.orientation;
+  var ep = state.EDGES.permutation;
+  var eo = state.EDGES.orientation;
+  if (unsolvedF2LPairs(state).length > 0) { return false; }
+  if (co[c.URF] !== 0) { return false; }
+  if (co[c.ULF] !== 0) { return false; }
+  if (co[c.ULB] !== 0) { return false; }
+  if (co[c.URB] !== 0) { return false; }
+  if (eo[e.UF] !== 0) { return false; }
+  if (eo[e.UL] !== 0) { return false; }
+  if (eo[e.UB] !== 0) { return false; }
+  if (eo[e.UR] !== 0) { return false; }
+
+  return true;
+}
+
+function isLLSolved(state) {
+  var cp = state.CORNERS.permutation;
+  var co = state.CORNERS.orientation;
+  var ep = state.EDGES.permutation;
+  var eo = state.EDGES.orientation;
+  if (unsolvedF2LPairs(state).length > 0) { return false; }
+  if (cp[c.URF] !== c.URF) { return false; }
+  if (cp[c.ULF] !== c.ULF) { return false; }
+  if (cp[c.ULB] !== c.ULB) { return false; }
+  if (cp[c.URB] !== c.URB) { return false; }
+  if (co[c.URF] !== 0) { return false; }
+  if (co[c.ULF] !== 0) { return false; }
+  if (co[c.ULB] !== 0) { return false; }
+  if (co[c.URB] !== 0) { return false; }
+  if (ep[e.UF] !== e.UF) { return false; }
+  if (ep[e.UL] !== e.UL) { return false; }
+  if (ep[e.UB] !== e.UB) { return false; }
+  if (ep[e.UR] !== e.UR) { return false; }
+  if (eo[e.UF] !== 0) { return false; }
+  if (eo[e.UL] !== 0) { return false; }
+  if (eo[e.UB] !== 0) { return false; }
+  if (eo[e.UR] !== 0) { return false; }
+
+  return true;
+}
+
+function isLLSolvedIgnoringAUF(state) {
+  k.state_ = state;
+  if (isLLSolved(k.state_)) { return true; }
+  k.applyMove("U");
+  if (isLLSolved(k.state_)) { return true; }
+  k.applyMove("U");
+  if (isLLSolved(k.state_)) { return true; }
+  k.applyMove("U");
+  if (isLLSolved(k.state_)) { return true; }
+  return false;
+}
+
 // k.applyMove(triggers.I["I2"]);
 // k.applyMove(triggers.I["i" ]);
 // k.applyMove(triggers.I["I'"]);
@@ -146,18 +208,49 @@ var depthPerPair = 2;
 
 var ks = new ksolvePuzzle(def);
 
+DEBUG = false;
+var KEEP_GOING = true;
+var numCandidates = 0;
+
+var llSkipCallback = function(algo) {
+  console.log("LL SKIP:", algo);
+};
+
+var ollSkipCallback = function(algo) {
+  console.log("Candidate #" + numCandidates + ":", algo);
+};
+
 // depth == depth left at this stage.
 // triggers
-function solveF2L(state, depth, previousPairs, alg) {
-  console.log(alg);
-  console.log(state);
+function solveF2L(state, depth, previousPairs, algo) {
+  if (DEBUG) { console.log(algo); };
+  // console.log(state);
   var pairs = unsolvedF2LPairs(state);
   // console.log("Pairs", pairs.length, previousPairs.length)
   if (pairs.length < previousPairs.length) { // Doesn't check that all previously pairs stayed solved, but progress is progress.
     if (pairs.length === 0) {
-      return alg;
+      numCandidates += 1;
+      if (isOLLSolved(state)) {
+        ollSkipCallback(algo);
+        // console.log(state);
+      }
+      if (isLLSolvedIgnoringAUF(cloneState(state))){
+        llSkipCallback(algo);
+        if (KEEP_GOING) {
+          return null;
+        } else {
+          return algo;
+        }
+      } else {
+        return null;
+      }
     } else {
-      return(solveF2L(state, depthPerPair, pairs, alg));
+      a = solveF2L(state, 1, pairs, algo + " /* " + pairs + " */");
+      if (a && !KEEP_GOING) { return a; };
+      a = solveF2L(state, 2, pairs, algo + " /* " + pairs + " */");
+      if (a) { return a; };
+      // a = solveF2L(state, 3, pairs, algo);
+      // if (a) { return a; };
     }
   }
   if (depth === 0) {
@@ -174,7 +267,7 @@ function solveF2L(state, depth, previousPairs, alg) {
         // console.log(AUFs[i]);
         ks.applyMove(AUFs[i]);
         ks.applyMove(triggers[pairs[j]][k]);
-        var s = solveF2L(ks.state_, depth - 1, pairs, alg + " " + i + " " + k);
+        var s = solveF2L(ks.state_, depth - 1, pairs, algo + " " + i + " " + k);
         if (s) {
           return s;
         }
@@ -184,11 +277,35 @@ function solveF2L(state, depth, previousPairs, alg) {
 }
 
 // k.applyAlg("F' R F' R' F R'");
-k.applyAlg("R F' R F R' F");
+// k.applyAlg("R F' R F R' F");
+// k.applyAlg("U2 L B L B2 D L2 F' R' B2 R2 U2 F' L2 F D2 B2 R2 D2       B' F' L' B' U' F2 R2");
+// k.applyAlg("L' U R' F' U L2 U2 L' U' L U2 D R' D' F2 R2 U'          U D F R' D'");
+// k.applyAlg("L' U R' F' U L2 U2 L' U' L U2 D R' D' F2 R2 U'          U2 L F' U L2");
 // k.applyAlg("R U R' B U B'");
-console.log("Go");
-console.log("Found: ", solveF2L(k.state_, depthPerPair, unsolvedF2LPairs(k.state_), ""));
-console.log("Done");
+
+
+function solveF2LWrapper(state) {
+  // TODO: verify / solve cross
+  console.log("solveF2LWrapper");
+  a = solveF2L(state, 1, unsolvedF2LPairs(state), "");
+  if (a && !KEEP_GOING) { return a; };
+  a = solveF2L(state, 2, unsolvedF2LPairs(state), "");
+  if (a && !KEEP_GOING) { return a; };
+  a = solveF2L(state, 3, unsolvedF2LPairs(state), "");
+  if (a && !KEEP_GOING) { return a; };
+}
+// console.log("Found: ", solveF2LWrapper(k.state_));
+// console.log("Done");
+
+function solve(algo) {
+  console.log("Solving alg:", algo);
+  var k = new ksolvePuzzle(def);
+  k.applyAlg(algo);
+  solveF2LWrapper(k.state_);
+  console.log("Done solving alg:", algo);
+}
+
+// solve("L' U R' F' U L2 U2 L' U' L U2 D R' D' F2 R2 U'          U2 L F' U L2");
 
 // kPuzzle.printState();
 // kPuzzle.applyMove(st);
