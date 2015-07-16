@@ -517,13 +517,17 @@ int f= parse_face(q);
 if(f<0)
 return-1;
 int t= 0;
+if (*q == '\0') {
+  t = 0;
+}
+else{
 switch(*q){
-case'1':case'+':t= 0;break;
+case' ':case'1':case'+':t= 0;break;
 case'2':t= 1;break;
 case'3':case'\'':case'-':t= TWISTS-1;break;
 default:
 return-1;
-}
+}}
 p= q+1;
 return f*TWISTS+t;
 }
