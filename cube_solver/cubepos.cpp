@@ -448,6 +448,7 @@ return r;
 #line 788 "cubepos.w"
 
 void cubepos::movepc(int mov){
+  std::cout<<"Move: " << mov<<std::endl;
 switch(mov){
 case 0:ROT4(e,0,2,3,1);ROT4(c,0,1,3,2);break;
 case 1:ROT22(e,0,2,3,1);ROT22(c,0,1,3,2);break;
@@ -455,7 +456,7 @@ case 2:ROT4(e,1,3,2,0);ROT4(c,2,3,1,0);break;
 case 3:ROT4(e,3,7,11,6);CORNER4FLIP(3,7,6,2);break;
 case 4:ROT22(e,3,7,11,6);ROT22(c,2,3,7,6);break;
 case 5:ROT4(e,6,11,7,3);CORNER4FLIP(3,2,6,7);break;
-case 6:EDGE4FLIP(2,5,10,7);CORNER4FLIP(1,5,7,3);break;
+case 6:EDGE4FLIP(2,5,10,7);CORNER4FLIP(1,5,7,3);;break;
 case 7:ROT22(e,2,5,10,7);ROT22(c,3,1,5,7);break;
 case 8:EDGE4FLIP(7,10,5,2);CORNER4FLIP(1,3,7,5);break;
 case 9:ROT4(e,9,11,10,8);ROT4(c,4,6,7,5);break;

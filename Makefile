@@ -1,6 +1,19 @@
-SOURCES = cube_solver/cubepos.h cube_solver/cubepos.cpp f2lfast.cpp
-FLAGS = -DHALF -O3
+HEADERS = cube_solver/cubepos.h
+SOURCES = cube_solver/cubepos.cpp f2lfast.cpp
 
-f2lfast: ${SOURCES}
-	g++ ${FLAGS} ${SOURCES}
-	mv a.out f2lfast
+# TODO: -O3
+FLAGS = -DHALF -O2 -std=c++11
+
+TARGET = f2lfast
+
+.PHONY: all
+all: test
+
+# TODO: Remove .PHONY line once done testing.
+.PHONY: ${TARGET}
+${TARGET}: ${HEADERS} ${SOURCES}
+	g++ ${FLAGS} ${SOURCES} -o ${TARGET}
+
+.PHONY: test
+test: ${TARGET}
+	./${TARGET}
