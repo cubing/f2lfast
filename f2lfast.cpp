@@ -169,25 +169,32 @@ bool isEqual(cubepos a, cubepos b) {
 const char* u_turn_str = "U";
 const int U_TURN = cubepos::parse_move(u_turn_str);
 
+const cubepos solvedUpToAUFs[4] = {
+  alg2pos(""),
+  alg2pos("U"),
+  alg2pos("U2"),
+  alg2pos("U'"),
+};
+
 bool isSolvedUpToAUF(cubepos pos) {
   cubepos check(pos);
-  if (isEqual(pos, identity_cube)) { return true; };
-  pos.move(U_TURN);
-  if (isEqual(pos, identity_cube)) { return true; };
-  pos.move(U_TURN);
-  if (isEqual(pos, identity_cube)) { return true; };
-  pos.move(U_TURN);
-  if (isEqual(pos, identity_cube)) { return true; };
+  for (int i = 0; i < 4; i++) {
+    if (isEqual(pos, solvedUpToAUFs[i])) {
+      return true;
+    };
+  }
   return false;
 }
 
+string indentation[4] = {"    ", "   ", "  ", " "};
+
 // Returns null if no solution is found.
 string solveF2LWithSkip(cubepos scramble, int depthRemaining) {
-  if (depthRemaining == 0) {
-    return string();
-  }
   if (isSolvedUpToAUF(scramble)) {
     return "!";
+  }
+  else if (depthRemaining == 0) {
+    return string();
   }
   for (Alg auf : AUFs) {
     cubepos pos1;
@@ -197,7 +204,6 @@ string solveF2LWithSkip(cubepos scramble, int depthRemaining) {
         cubepos pos2;
         cubepos::mul(pos1, trigger.pos, pos2);
 
-        string indentation[4] = {"    ", "   ", "  ", " "};
         // cout << indentation[depthRemaining] << auf.name_ + string(" ") + trigger.name_  << " (" << depthRemaining << ")" << endl;
         string solution = solveF2LWithSkip(pos2, depthRemaining - 1);
         if (solution.length() > 0) {
@@ -219,7 +225,7 @@ int main(int argc, char *argv[]) {
 
   // cubepos scramble = alg2pos("F' R' U2 R F");
   // cubepos scramble = alg2pos("U' R U R' U L' U' L");
-  cubepos scramble = alg2pos("R U' R' U R U2 R' U' R U R'");
+  cubepos scramble = alg2pos("R U' R' U R U2 R' U' R U R' L' U' L");
   string solution = solve(scramble);
   cout << "Solution: " << solution << endl;
 }

@@ -518,9 +518,11 @@ if(f<0)
 return-1;
 int t= 0;
 if (*q == '\0') {
+  // Handle clockwise turns at the end of an alg.
   t = 0;
-}
-else{
+  p = q;
+  return f*TWISTS+t;
+} else{
 switch(*q){
 case' ':case'1':case'+':t= 0;break;
 case'2':t= 1;break;
