@@ -1,34 +1,30 @@
+bool anyTestFailure = false;
 
-void printCubies(cubepos pos) {
-  for (int i = 0; i < NUM_EDGES; i++) {
-    cout << "Edge #" << i << ": " << int(pos.e[i]) << endl;
-  }
-  for (int i = 0; i < NUM_CORNERS; i++) {
-    cout << "Corner #" << i << ": " << int(pos.c[i]) << endl;
+void testCondition(bool expected, bool actual, string expectGood, string expectBad) {
+  string output = string(expected == actual ? "OK" : "FAIL") + ": " + string(expected ? expectGood : expectBad);
+  if (expected == actual) {
+    cout << output << endl;
+  } else {
+    cerr << output << endl;
+    anyTestFailure = true;
   }
 }
 
 void testPos(
     cubepos pos,
-    int expectF2LSolved,
-    int expectOLLSolved,
-    int expectSolvedUpToAUF) {
-  cout <<
-  ((isF2LSolved(pos) == expectF2LSolved) ? "OK" : "FAIL") << ": " <<
-    (expectF2LSolved ? "F2L should be solved" : "F2L should NOT be solved") << endl;
-  cout <<
-  ((isOLLSolved(pos) == expectOLLSolved) ? "OK" : "FAIL") << ": " <<
-    (expectOLLSolved ? "OLL should be solved" : "OLL should NOT be solved") << endl;
-  cout <<
-  ((isSolvedUpToAUF(pos) == expectSolvedUpToAUF) ? "OK" : "FAIL") << ": " <<
-    (expectSolvedUpToAUF ? "Should be entirely solved (up to AUF)" : "Should NOT be entirely solved (up to AUF)") << endl;
+    bool expectF2LSolved,
+    bool expectOLLSolved,
+    bool expectSolvedUpToAUF) {
+  testCondition(expectF2LSolved, isF2LSolved(pos), "F2L should be solved", "F2L should NOT be solved");
+  testCondition(expectOLLSolved, isOLLSolved(pos), "OLL should be solved", "OLL should NOT be solved");
+  testCondition(expectSolvedUpToAUF, isSolvedUpToAUF(pos), "Should be entirely solved (up to AUF)" , "Should NOT be entirely solved (up to AUF)");
 }
 
 void testAlg(
     const char* alg,
-    int expectF2LSolved,
-    int expectOLLSolved,
-    int expectSolvedUpToAUF) {
+    bool expectF2LSolved,
+    bool expectOLLSolved,
+    bool expectSolvedUpToAUF) {
   cout << "----------------" << endl;
   cout << "Test case: " << alg << endl;
   cubepos pos = alg2pos(alg);
@@ -51,4 +47,11 @@ void test() {
     true, false, false);
   testAlg("R",
     false, false, false);
+
+  cout << "----------------" << endl;
+  if (anyTestFailure) {
+    cerr << "All test passed: NO";
+  } else {
+    cout << "All test passed: YES";
+  }
 }
