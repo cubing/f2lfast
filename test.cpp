@@ -11,7 +11,7 @@ void testCondition(bool expected, bool actual, string expectGood, string expectB
 }
 
 void testLLPos(
-    cubepos pos,
+    const cubepos& pos,
     bool expectF2LSolved,
     bool expectOLLSolved,
     bool expectSolvedUpToAUF) {

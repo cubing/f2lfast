@@ -1,5 +1,5 @@
 
-bool isEqual(cubepos a, cubepos b) {
+bool isEqual(const cubepos& a, const cubepos& b) {
   for (int i = 0; i < NUM_EDGES; i++) {
     if (a.e[i] != b.e[i]) {
       return false;
@@ -32,7 +32,7 @@ int slotIndices[NUM_SLOTS][2] {
   {7, 7}  // SLOT_K_FR
 };
 
-bool isSlotSolved(F2LSlot slot, cubepos& pos) {
+bool isSlotSolved(F2LSlot slot, const cubepos& pos) {
   int edge_index = slotIndices[slot][0];
   if (pos.e[edge_index] != identity_cube.e[edge_index]) {
     return false;
@@ -48,7 +48,7 @@ bool isSlotSolved(F2LSlot slot, cubepos& pos) {
 const int START_F2L_EDGE_INDEX = 4;
 const int START_F2L_CORNER_INDEX = 4;
 
-bool isF2LSolved(cubepos pos) {
+bool isF2LSolved(const cubepos& pos) {
   for (int i = START_F2L_EDGE_INDEX; i < NUM_EDGES; i++) {
     if (pos.e[i] != identity_cube.e[i]) {
       return false;
@@ -62,7 +62,7 @@ bool isF2LSolved(cubepos pos) {
   return true; // TODO
 }
 
-bool isOLLSolved(cubepos pos) {
+bool isOLLSolved(const cubepos& pos) {
   if (!isF2LSolved(pos)) {
     return false;
   }
@@ -79,7 +79,7 @@ bool isOLLSolved(cubepos pos) {
   return true;
 }
 
-bool isSolvedUpToAUF(cubepos pos) {
+bool isSolvedUpToAUF(const cubepos& pos) {
   cubepos check(pos);
   for (int i = 0; i < NUM_AUFs; i++) {
     if (isEqual(pos, solvedUpToAUFs[i])) {

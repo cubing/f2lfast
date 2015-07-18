@@ -20,7 +20,7 @@ public:
   const int cost_;
 };
 
-void printCubies(cubepos pos) {
+void printCubies(const cubepos& pos) {
   for (int i = 0; i < NUM_EDGES; i++) {
     cout << "Edge #" << i << ": " << int(pos.e[i]) << endl;
   }

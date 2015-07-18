@@ -2,7 +2,7 @@
 string indentation[4] = {"    ", "   ", "  ", " "};
 
 // Returns null if no solution is found.
-string solveF2LWithSkip(cubepos scramble, int depthRemaining) {
+string solveF2LWithSkip(const cubepos& scramble, int depthRemaining) {
   if (isSolvedUpToAUF(scramble)) {
     return "!";
   }
@@ -28,7 +28,7 @@ string solveF2LWithSkip(cubepos scramble, int depthRemaining) {
   return string();
 }
 
-string solve(cubepos scramble) {
+string solve(const cubepos& scramble) {
   // Assume cross is solved for now.
   return solveF2LWithSkip(scramble, 2);
 }
