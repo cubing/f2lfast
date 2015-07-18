@@ -18,8 +18,22 @@ bool slotInMaskIsSolved(F2LSlot slot, const F2LSlotMask mask) {
   return (mask & (1 << slot)) != 0;
 }
 
-bool firstMaskIsSubsetOfSecond(F2LSlotMask first, F2LSlotMask second) {
-  return (second & (~first)) != 0;
+// Returns a copy of `original` with all bits from `remove set to 0.
+F2LSlotMask slotSubtract(F2LSlotMask original, F2LSlotMask remove) {
+  return (original & (~remove));
+}
+
+bool secondMaskIsSubsetOfFirst(F2LSlotMask first, F2LSlotMask second) {
+  return slotSubtract(first, second) != 0;
+}
+
+bool slotMaskToString(F2LSlotMask mask) {
+  string output = "";
+  if (slotInMaskIsSolved(SLOT_H_FL, mask)) { output += "FL "; };
+  if (slotInMaskIsSolved(SLOT_I_BL, mask)) { output += "BL "; };
+  if (slotInMaskIsSolved(SLOT_J_BR, mask)) { output += "BR "; };
+  if (slotInMaskIsSolved(SLOT_K_FR, mask)) { output += "FR "; };
+  return output;
 }
 
 const int MAX_DEPTH_PER_SLOT = 3;
@@ -27,7 +41,7 @@ const int MAX_DEPTH_PER_SLOT = 3;
 // Returns null if no solution is found.
 string solveF2LWithSkip(const cubepos& scramble, int depthRemaining, F2LSlotMask mask) {
   if (isSolvedUpToAUF(scramble)) {
-    return "!";
+    return ".";
   }
   else if (depthRemaining == 0) {
     return string();
@@ -43,16 +57,19 @@ string solveF2LWithSkip(const cubepos& scramble, int depthRemaining, F2LSlotMask
         cubepos pos2;
         cubepos::mul(pos1, trigger.pos, pos2);
 
+        string newlySlovedSlots = "";
+
         F2LSlotMask newMask = slotMask(pos2);
         int nextDepth = depthRemaining - 1;
-        if (firstMaskIsSubsetOfSecond(mask, newMask)) {
+        if (secondMaskIsSubsetOfFirst(newMask, mask)) {
           nextDepth = MAX_DEPTH_PER_SLOT;
-          cout << indentation[depthRemaining] << auf.name_ + string(" ") + trigger.name_  << " (" << depthRemaining << ")" << endl;
+          newlySlovedSlots = slotMaskToString(slotSubtract(newMask, mask));
+          // cout << indentation[depthRemaining] << auf.name_ + string(" ") + trigger.name_  << " (" << depthRemaining << ")" << endl;
         }
 
-        string solution = solveF2LWithSkip(pos2, depthRemaining - 1, newMask);
+        string solution = solveF2LWithSkip(pos2, nextDepth, newMask);
         if (solution.length() > 0) {
-          return auf.name_ + string(" ") + trigger.name_ + string(" / ") + solution;
+          return auf.name_ + string(" ") + trigger.name_ + "/* " + newlySlovedSlots + "*/" + solution;
         }
       }
     }
@@ -67,7 +84,7 @@ string solve(const cubepos& scramble) {
   if (solution.length() > 0) { return solution; }
   solution = solveF2LWithSkip(scramble, 2, slotMask(scramble));
   if (solution.length() > 0) { return solution; }
-  solution = solveF2LWithSkip(scramble, 3, slotMask(scramble));
+  solution = solveF2LWithSkip(scramble, 4, slotMask(scramble));
   if (solution.length() > 0) { return solution; }
-  return solution;
+  return "Solution not found.";
 }

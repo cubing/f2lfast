@@ -76,14 +76,14 @@ void test() {
   testCondition(true, slotInMaskIsSolved(SLOT_J_BR, slotMask(posAllButBRSolved)) == false, "BR is NOT solved", "");
 
   cubepos posFLAndBLSolved = alg2pos("R U R2 U R");
-  testCondition(true, firstMaskIsSubsetOfSecond(slotMask(posOnlyBLSolved), slotMask(posFLAndBLSolved)) == true, "Slots are subset", "");
-  testCondition(true, firstMaskIsSubsetOfSecond(slotMask(posFLAndBLSolved), slotMask(posOnlyBLSolved)) == false, "Slots are NOT subset", "");
+  testCondition(true, secondMaskIsSubsetOfFirst(slotMask(posFLAndBLSolved), slotMask(posOnlyBLSolved)) == true, "Slots are subset", "");
+  testCondition(true, secondMaskIsSubsetOfFirst(slotMask(posOnlyBLSolved), slotMask(posFLAndBLSolved)) == false, "Slots are NOT subset", "");
 
-  testCondition(true, firstMaskIsSubsetOfSecond(slotMask(posFLAndBLSolved), slotMask(posAllButBRSolved)) == true, "Slots are subset", "");
-  testCondition(true, firstMaskIsSubsetOfSecond(slotMask(posAllButBRSolved), slotMask(posFLAndBLSolved)) == false, "Slots are NOT subset", "");
+  testCondition(true, secondMaskIsSubsetOfFirst(slotMask(posAllButBRSolved), slotMask(posFLAndBLSolved)) == true, "Slots are subset", "");
+  testCondition(true, secondMaskIsSubsetOfFirst(slotMask(posFLAndBLSolved), slotMask(posAllButBRSolved)) == false, "Slots are NOT subset", "");
 
-  testCondition(true, firstMaskIsSubsetOfSecond(slotMask(posOnlyBLSolved), slotMask(posAllButBRSolved)) == true, "Slots are subset", "");
-  testCondition(true, firstMaskIsSubsetOfSecond(slotMask(posAllButBRSolved), slotMask(posOnlyBLSolved)) == false, "Slots are NOT a subset", "");
+  testCondition(true, secondMaskIsSubsetOfFirst(slotMask(posAllButBRSolved), slotMask(posOnlyBLSolved)) == true, "Slots are subset", "");
+  testCondition(true, secondMaskIsSubsetOfFirst(slotMask(posOnlyBLSolved), slotMask(posAllButBRSolved)) == false, "Slots are NOT a subset", "");
 
   cout << "----------------" << endl;
   if (anyTestFailure) {
