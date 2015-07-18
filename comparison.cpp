@@ -80,7 +80,6 @@ bool isOLLSolved(const cubepos& pos) {
 }
 
 bool isSolvedUpToAUF(const cubepos& pos) {
-  cubepos check(pos);
   for (int i = 0; i < NUM_AUFs; i++) {
     if (isEqual(pos, solvedUpToAUFs[i])) {
       return true;
