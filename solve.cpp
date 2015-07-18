@@ -1,6 +1,23 @@
 
 string indentation[4] = {"    ", "   ", "  ", " "};
 
+// The i-th position from the right is set iff slot #i is solved.
+typedef unsigned char F2LSlotMask;
+
+F2LSlotMask slotMask(cubepos& pos) {
+  F2LSlotMask mask = 0;
+  for (size_t slot = 0; slot < NUM_SLOTS; slot++) {
+    if (isSlotSolved(F2LSlot(slot), pos)) {
+      mask |= 1 << slot;
+    }
+  }
+  return mask;
+}
+
+bool slotInMaskIsSolved(F2LSlot slot, const F2LSlotMask mask) {
+  return (slot & mask) != 0;
+}
+
 // Returns null if no solution is found.
 string solveF2LWithSkip(const cubepos& scramble, int depthRemaining) {
   if (isSolvedUpToAUF(scramble)) {

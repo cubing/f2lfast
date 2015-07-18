@@ -13,8 +13,8 @@ const size_t NUM_CORNERS = 8;
 #include "alg.cpp"
 #include "triggers.cpp"
 #include "comparison.cpp"
-#include "test.cpp"
 #include "solve.cpp"
+#include "test.cpp"
 
 int main(int argc, char *argv[]) {
   init_algs();

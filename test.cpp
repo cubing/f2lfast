@@ -67,6 +67,14 @@ void test() {
   testF2L("F2", false, true, true, false);
   testF2L("L U' R U2 L' U R'", true, false, true, false);
 
+  cout << "----------------" << endl;
+  cubepos posD = alg2pos("D");
+  testCondition(true, slotMask(posD) == 0, "Slot mask is 0 (no slots are solved)", "");
+  cubepos posBL = alg2pos("R' U' R");
+  testCondition(true, slotMask(posBL) == 11, "Slot mask is 11", "");
+  testCondition(true, slotInMaskIsSolved(SLOT_K_FR, slotMask(posBL)) == true, "FR is solved", "");
+  testCondition(true, slotInMaskIsSolved(SLOT_I_BL, slotMask(posBL)) == true, "BL is NOT solved", "");
+
 
   cout << "----------------" << endl;
   if (anyTestFailure) {
