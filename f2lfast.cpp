@@ -24,7 +24,7 @@ int main(int argc, char *argv[]) {
   } else if (argc == 3 && strcmp(argv[1], "--scramble") == 0) {
     cubepos scramble = alg2pos(argv[2]);
     string solution = solve(scramble);
-    cout << "Solution: " << solution << endl;
+    cout << "Solution: " << endl << solution << endl;
     return 0;
   } else {
     cout << "Usage: " << argv[0] << " [--test | --scramble <scramble>]";

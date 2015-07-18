@@ -27,7 +27,7 @@ bool secondMaskIsSubsetOfFirst(F2LSlotMask first, F2LSlotMask second) {
   return slotSubtract(first, second) != 0;
 }
 
-bool slotMaskToString(F2LSlotMask mask) {
+string slotMaskToString(F2LSlotMask mask) {
   string output = "";
   if (slotInMaskIsSolved(SLOT_H_FL, mask)) { output += "FL "; };
   if (slotInMaskIsSolved(SLOT_I_BL, mask)) { output += "BL "; };
@@ -63,13 +63,17 @@ string solveF2LWithSkip(const cubepos& scramble, int depthRemaining, F2LSlotMask
         int nextDepth = depthRemaining - 1;
         if (secondMaskIsSubsetOfFirst(newMask, mask)) {
           nextDepth = MAX_DEPTH_PER_SLOT;
-          newlySlovedSlots = slotMaskToString(slotSubtract(newMask, mask));
           // cout << indentation[depthRemaining] << auf.name_ + string(" ") + trigger.name_  << " (" << depthRemaining << ")" << endl;
         }
 
         string solution = solveF2LWithSkip(pos2, nextDepth, newMask);
         if (solution.length() > 0) {
-          return auf.name_ + string(" ") + trigger.name_ + "/* " + newlySlovedSlots + "*/" + solution;
+          string newlySlovedSlots = slotMaskToString(slotSubtract(newMask, mask));
+          string slotComment = "";
+          if (newlySlovedSlots != "") {
+            slotComment = "/* " + newlySlovedSlots + "*/\n";
+          }
+          return auf.name_ + string(" ") + trigger.name_ + " " + slotComment + solution;
         }
       }
     }
