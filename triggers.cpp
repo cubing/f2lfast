@@ -4,11 +4,14 @@ vector<Alg> AUFs;
 // Triggers are grouped by slot.
 // This makes it easy to avoid applying triggers for a slot that is already solved;
 const size_t NUM_SLOTS = 4;
+
 vector<Alg> triggers[NUM_SLOTS];
-const unsigned char SLOT_H_FL = 0;
-const unsigned char SLOT_I_BL = 1;
-const unsigned char SLOT_J_BR = 2;
-const unsigned char SLOT_K_FR = 3;
+enum F2LSlot {
+  SLOT_H_FL = 0,
+  SLOT_I_BL = 1,
+  SLOT_J_BR = 2,
+  SLOT_K_FR = 3
+};
 
 void init_algs() {
 

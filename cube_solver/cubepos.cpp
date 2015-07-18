@@ -506,6 +506,8 @@ case'r':case'R':return 2;
 case'd':case'D':return 3;
 case'b':case'B':return 4;
 case'l':case'L':return 5;
+case'\'':
+  cerr << "WARNING: DETECTED AN ALG CONTAING 2'. Leave out the prime for double moves." << endl;
 default:
 // cout << endl << endl << "WARNING: ERROR PARSING ALG" << endl << endl;
 return-1;

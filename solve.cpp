@@ -27,6 +27,7 @@ string solveF2LWithSkip(cubepos scramble, int depthRemaining) {
   }
   return string();
 }
+
 string solve(cubepos scramble) {
   // Assume cross is solved for now.
   return solveF2LWithSkip(scramble, 2);

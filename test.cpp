@@ -10,7 +10,7 @@ void testCondition(bool expected, bool actual, string expectGood, string expectB
   }
 }
 
-void testPos(
+void testLLPos(
     cubepos pos,
     bool expectF2LSolved,
     bool expectOLLSolved,
@@ -20,33 +20,53 @@ void testPos(
   testCondition(expectSolvedUpToAUF, isSolvedUpToAUF(pos), "Should be entirely solved (up to AUF)" , "Should NOT be entirely solved (up to AUF)");
 }
 
-void testAlg(
+void testLLAlg(
     const char* alg,
     bool expectF2LSolved,
     bool expectOLLSolved,
     bool expectSolvedUpToAUF) {
   cout << "----------------" << endl;
-  cout << "Test case: " << alg << endl;
+  cout << "LL Test case: " << alg << endl;
   cubepos pos = alg2pos(alg);
   cout << pos.Singmaster_string() << endl;
   // printCubies(pos);
-  testPos(pos, expectF2LSolved, expectOLLSolved, expectSolvedUpToAUF);
+  testLLPos(pos, expectF2LSolved, expectOLLSolved, expectSolvedUpToAUF);
+}
+
+void testF2L(const char* alg, bool expectFL, bool expectBL, bool expectBR, bool expectFR) {
+  cout << "----------------" << endl;
+  cout << "F2L test case: " << alg << endl;
+  cubepos pos = alg2pos(alg);
+  testCondition(expectFL, isSlotSolved(SLOT_H_FL, pos), "FL should be solved", "FL should NOT be solved");
+  testCondition(expectBL, isSlotSolved(SLOT_I_BL, pos), "BL should be solved", "BL should NOT be solved");
+  testCondition(expectBR, isSlotSolved(SLOT_J_BR, pos), "BR should be solved", "BR should NOT be solved");
+  testCondition(expectFR, isSlotSolved(SLOT_K_FR, pos), "FR should be solved", "FR should NOT be solved");
 }
 
 void test() {
-  testAlg("U",
+
+  testLLAlg("U",
     true, true, true);
   // U-perm
-  testAlg("R2 U R U R' U' R' U' R' U R'",
+  testLLAlg("R2 U R U R' U' R' U' R' U R'",
     true, true, false);
   // R-perm
-  testAlg("R' U2 R U2 R' F R U R' U' R' F' R2 U'",
+  testLLAlg("R' U2 R U2 R' F R U R' U' R' F' R2 U'",
     true, true, false);
   // Sune
-  testAlg("R U R' U R U2 R'",
+  testLLAlg("R U R' U R U2 R'",
     true, false, false);
-  testAlg("R",
+  testLLAlg("R",
     false, false, false);
+
+  testF2L("F U r U' R' F'", true, true, true, true);
+  testF2L("L' U L", false, true, true, true);
+  testF2L("L U L'", true, false, true, true);
+  testF2L("R' U R", true, true, false, true);
+  testF2L("R U R'", true, true, true, false);
+  testF2L("F2", false, true, true, false);
+  testF2L("L U' R U2 L' U R'", true, false, true, false);
+
 
   cout << "----------------" << endl;
   if (anyTestFailure) {

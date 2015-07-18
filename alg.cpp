@@ -19,3 +19,12 @@ public:
   cubepos pos;
   const int cost_;
 };
+
+void printCubies(cubepos pos) {
+  for (int i = 0; i < NUM_EDGES; i++) {
+    cout << "Edge #" << i << ": " << int(pos.e[i]) << endl;
+  }
+  for (int i = 0; i < NUM_CORNERS; i++) {
+    cout << "Corner #" << i << ": " << int(pos.c[i]) << endl;
+  }
+}

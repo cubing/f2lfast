@@ -24,6 +24,26 @@ const cubepos solvedUpToAUFs[NUM_AUFs] = {
   alg2pos("U'"),
 };
 
+// Pair of {edge, corner} indices.
+int slotIndices[NUM_SLOTS][2] {
+  {6, 6}, // SLOT_H_FL
+  {4, 4}, // SLOT_I_BL
+  {5, 5}, // SLOT_J_BR
+  {7, 7}  // SLOT_K_FR
+};
+
+bool isSlotSolved(F2LSlot slot, cubepos& pos) {
+  int edge_index = slotIndices[slot][0];
+  if (pos.e[edge_index] != identity_cube.e[edge_index]) {
+    return false;
+  }
+  int corner_index = slotIndices[slot][1];
+  if (pos.c[corner_index] != identity_cube.c[corner_index]) {
+    return false;
+  }
+  return true;
+}
+
 // The first few edges/corners are on U.
 const int START_F2L_EDGE_INDEX = 4;
 const int START_F2L_CORNER_INDEX = 4;
