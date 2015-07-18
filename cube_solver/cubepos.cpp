@@ -507,12 +507,16 @@ case'd':case'D':return 3;
 case'b':case'B':return 4;
 case'l':case'L':return 5;
 default:
+// cout << endl << endl << "WARNING: ERROR PARSING ALG" << endl << endl;
 return-1;
 }
 }
 int cubepos::parse_move(const char*&p){
 skip_whitespace(p);
 const char*q= p;
+if (*q == '\0') {
+  return -1;
+}
 int f= parse_face(q);
 if(f<0)
 return-1;
@@ -545,8 +549,11 @@ append_face(p,mv/TWISTS);
 moveseq cubepos::parse_moveseq(const char*&p){
 moveseq r;
 int mv;
-while((mv= parse_move(p))>=0)
-r.push_back(mv);
+while((mv= parse_move(p))>=0) {
+  // cout << mv << ", "; // For debugging alg parsing
+  r.push_back(mv);
+}
+// cout << endl;
 return r;
 }
 void cubepos::append_moveseq(char*&p,const moveseq&seq){
