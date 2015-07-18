@@ -32,6 +32,8 @@ int slotIndices[NUM_SLOTS][2] {
   {7, 7}  // SLOT_K_FR
 };
 
+// Not: Ignores anything but the edge and corner of the relevant slot.
+// In particular, ignores cross.
 bool isSlotSolved(F2LSlot slot, const cubepos& pos) {
   int edge_index = slotIndices[slot][0];
   if (pos.e[edge_index] != identity_cube.e[edge_index]) {

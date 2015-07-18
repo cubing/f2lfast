@@ -15,7 +15,11 @@ F2LSlotMask slotMask(cubepos& pos) {
 }
 
 bool slotInMaskIsSolved(F2LSlot slot, const F2LSlotMask mask) {
-  return (slot & mask) != 0;
+  return (mask & (1 << slot)) != 0;
+}
+
+bool firstMaskIsSubsetOfSecond(F2LSlotMask first, F2LSlotMask second) {
+  return (second & (~first)) != 0;
 }
 
 // Returns null if no solution is found.

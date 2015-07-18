@@ -68,13 +68,22 @@ void test() {
   testF2L("L U' R U2 L' U R'", true, false, true, false);
 
   cout << "----------------" << endl;
-  cubepos posD = alg2pos("D");
-  testCondition(true, slotMask(posD) == 0, "Slot mask is 0 (no slots are solved)", "");
-  cubepos posBL = alg2pos("R' U' R");
-  testCondition(true, slotMask(posBL) == 11, "Slot mask is 11", "");
-  testCondition(true, slotInMaskIsSolved(SLOT_K_FR, slotMask(posBL)) == true, "FR is solved", "");
-  testCondition(true, slotInMaskIsSolved(SLOT_I_BL, slotMask(posBL)) == true, "BL is NOT solved", "");
+  cubepos posOnlyBLSolved = alg2pos("F R");
+  testCondition(true, slotMask(posOnlyBLSolved) == (1 << SLOT_I_BL), "Slot mask is 1 (only BL is solved)", "");
+  cubepos posAllButBRSolved = alg2pos("R' U' R");
+  testCondition(true, slotMask(posAllButBRSolved) == 11, "Slot mask is 11", "");
+  testCondition(true, slotInMaskIsSolved(SLOT_K_FR, slotMask(posAllButBRSolved)) == true, "FR is solved", "");
+  testCondition(true, slotInMaskIsSolved(SLOT_J_BR, slotMask(posAllButBRSolved)) == false, "BR is NOT solved", "");
 
+  cubepos posFLAndBLSolved = alg2pos("R U R2 U R");
+  testCondition(true, firstMaskIsSubsetOfSecond(slotMask(posOnlyBLSolved), slotMask(posFLAndBLSolved)) == true, "Slots are subset", "");
+  testCondition(true, firstMaskIsSubsetOfSecond(slotMask(posFLAndBLSolved), slotMask(posOnlyBLSolved)) == false, "Slots are NOT subset", "");
+
+  testCondition(true, firstMaskIsSubsetOfSecond(slotMask(posFLAndBLSolved), slotMask(posAllButBRSolved)) == true, "Slots are subset", "");
+  testCondition(true, firstMaskIsSubsetOfSecond(slotMask(posAllButBRSolved), slotMask(posFLAndBLSolved)) == false, "Slots are NOT subset", "");
+
+  testCondition(true, firstMaskIsSubsetOfSecond(slotMask(posOnlyBLSolved), slotMask(posAllButBRSolved)) == true, "Slots are subset", "");
+  testCondition(true, firstMaskIsSubsetOfSecond(slotMask(posAllButBRSolved), slotMask(posOnlyBLSolved)) == false, "Slots are NOT a subset", "");
 
   cout << "----------------" << endl;
   if (anyTestFailure) {
