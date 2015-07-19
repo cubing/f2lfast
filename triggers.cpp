@@ -17,9 +17,9 @@ void init_algs() {
 
   AUFs.push_back(Alg(""  , 0));
   AUFs[0].name_ = ".";
-  AUFs.push_back(Alg("U", 0));
-  AUFs.push_back(Alg("U2", 0));
-  AUFs.push_back(Alg("U'", 0));
+  AUFs.push_back(Alg("U", 1));
+  AUFs.push_back(Alg("U2", 1));
+  AUFs.push_back(Alg("U'", 1));
 
   const int RL_BOOST = 1;
   const int SLEDGE_BOOST = 1;

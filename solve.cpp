@@ -23,9 +23,9 @@ F2LSlotMask slotSubtract(F2LSlotMask original, F2LSlotMask remove) {
   return (original & (~remove));
 }
 
-bool secondMaskIsSubsetOfFirst(F2LSlotMask first, F2LSlotMask second) {
-  return slotSubtract(first, second) != 0;
-}
+// bool secondMaskIsSubsetOfFirst(F2LSlotMask first, F2LSlotMask second) {
+//   return slotSubtract(first, second) != 0;
+// }
 
 string slotMaskToString(F2LSlotMask mask) {
   string output = "";
@@ -36,20 +36,24 @@ string slotMaskToString(F2LSlotMask mask) {
   return output;
 }
 
-const int MAX_DEPTH_PER_SLOT = 3;
+const int MAX_DEPTH_PER_SLOT = 2;
 
 struct AlgChain {
   Alg* auf;
   Alg* trigger;
-  bool solvesSlot;
+  F2LSlotMask slotDifference;
   AlgChain* prefix;
 };
 
-string algChainToString(AlgChain* leaf) {
+string constructAlg(AlgChain* leaf, int& cost) {
   AlgChain* current = leaf;
   string output;
+  cost = 0;
   while (true) {
-    output = (current->auf->name_) + " " + (current->trigger->name_) + (current->solvesSlot ? "\n" : " ") + output;
+    output = (current->auf->name_) + " " + (current->trigger->name_) + " " +
+             (current->slotDifference != 0 ? ("// Slot: " + slotMaskToString(current->slotDifference) + "\n") : "") +
+             output;
+    cost += current->auf->cost_ + current->trigger->cost_;
     if (current->prefix == nullptr) {
       break;
     } else {
@@ -59,10 +63,19 @@ string algChainToString(AlgChain* leaf) {
   return output;
 }
 
+int bestCostSofar = 1000; // TODO: Pass around inside the recursion.
+
 // Returns null if no solution is found.
 string solveF2LWithSkip(const cubepos& scramble, int depthRemaining, F2LSlotMask mask, AlgChain* prefix) {
   if (isSolvedUpToAUF(scramble)) {
-    cout << "Solution:" << endl << algChainToString(prefix)  << endl;
+    int cost;
+    string solution = constructAlg(prefix, cost);
+    if (cost <= bestCostSofar + 1) {
+      cout << "Solution:" << endl << "// Cost: " << cost << endl << solution << endl;
+    }
+    if (cost < bestCostSofar) {
+      bestCostSofar = cost;
+    }
     return ".";
   }
   else if (depthRemaining == 0) {
@@ -81,20 +94,20 @@ string solveF2LWithSkip(const cubepos& scramble, int depthRemaining, F2LSlotMask
 
         string newlySlovedSlots = "";
 
+        F2LSlotMask newMask = slotMask(pos2);
+        int nextDepth = depthRemaining - 1;
+        F2LSlotMask slotDifference = slotSubtract(newMask, mask);
+        if (slotDifference != 0) {
+          nextDepth = MAX_DEPTH_PER_SLOT;
+          // cout << indentation[depthRemaining] << auf.name_ + string(" ") + trigger.name_  << " (" << depthRemaining << ")" << endl;
+        }
+
         AlgChain link = {
           &auf,
           &trigger,
-          false,
+          slotDifference,
           prefix
         };
-
-        F2LSlotMask newMask = slotMask(pos2);
-        int nextDepth = depthRemaining - 1;
-        if (secondMaskIsSubsetOfFirst(newMask, mask)) {
-          nextDepth = MAX_DEPTH_PER_SLOT;
-          link.solvesSlot = true;
-          // cout << indentation[depthRemaining] << auf.name_ + string(" ") + trigger.name_  << " (" << depthRemaining << ")" << endl;
-        }
 
         string solution = solveF2LWithSkip(pos2, nextDepth, newMask, &link);
         // if (solution.length() > 0) {
@@ -118,7 +131,7 @@ string solve(const cubepos& scramble) {
   if (solution.length() > 0) { return solution; }
   solution = solveF2LWithSkip(scramble, 2, slotMask(scramble), nullptr);
   if (solution.length() > 0) { return solution; }
-  solution = solveF2LWithSkip(scramble, 4, slotMask(scramble), nullptr);
+  solution = solveF2LWithSkip(scramble, 3, slotMask(scramble), nullptr);
   if (solution.length() > 0) { return solution; }
   return "Solution not found.";
 }
