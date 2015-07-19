@@ -1,3 +1,4 @@
+#include <set>
 
 string indentation[4] = {"    ", "   ", "  ", " "};
 
@@ -64,6 +65,7 @@ string constructAlg(AlgChain* leaf, int& cost) {
 }
 
 int bestCostSofar = 1000; // TODO: Pass around inside the recursion.
+set<string> bestFound;
 
 // Returns null if no solution is found.
 string solveF2LWithSkip(const cubepos& scramble, int depthRemaining, int costSofar, F2LSlotMask mask, AlgChain* prefix) {
@@ -75,7 +77,10 @@ string solveF2LWithSkip(const cubepos& scramble, int depthRemaining, int costSof
     int cost;
     string solution = constructAlg(prefix, cost);
     if (cost <= bestCostSofar + 1) {
-      cout << "Solution:" << endl << "// Cost: " << cost << " " << costSofar << endl << solution << endl;
+      if (bestFound.find(solution) == bestFound.end()) {
+        cout << "Solution:" << endl << "// Cost: " << cost << " " << costSofar << endl << solution << endl;
+        bestFound.insert(solution);
+      }
     }
     if (cost < bestCostSofar) {
       bestCostSofar = cost;
@@ -101,10 +106,6 @@ string solveF2LWithSkip(const cubepos& scramble, int depthRemaining, int costSof
         F2LSlotMask newMask = slotMask(pos2);
         int nextDepth = depthRemaining - 1;
         F2LSlotMask slotDifference = slotSubtract(newMask, mask);
-        if (slotDifference != 0) {
-          nextDepth = MAX_DEPTH_PER_SLOT;
-          // cout << indentation[depthRemaining] << auf.name_ + string(" ") + trigger.name_  << " (" << depthRemaining << ")" << endl;
-        }
 
         AlgChain link = {
           &auf,
@@ -114,7 +115,18 @@ string solveF2LWithSkip(const cubepos& scramble, int depthRemaining, int costSof
         };
 
         int newCost = costSofar + auf.cost_ + trigger.cost_;
-        string solution = solveF2LWithSkip(pos2, nextDepth, newCost, newMask, &link);
+
+        if (slotDifference != 0) {
+          nextDepth = MAX_DEPTH_PER_SLOT;
+          for (int startingDepth = 1; startingDepth <= MAX_DEPTH_PER_SLOT; startingDepth++) {
+            // Start the search for the next slot with the shorter solutions.
+            string solution = solveF2LWithSkip(pos2, startingDepth, newCost, newMask, &link);
+          }
+          // cout << indentation[depthRemaining] << auf.name_ + string(" ") + trigger.name_  << " (" << depthRemaining << ")" << endl;
+        } else {
+          string solution = solveF2LWithSkip(pos2, nextDepth, newCost, newMask, &link);
+        }
+
         // if (solution.length() > 0) {
         //   string newlySlovedSlots = slotMaskToString(slotSubtract(newMask, mask));
         //   string slotComment = "";
