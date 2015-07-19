@@ -26,31 +26,31 @@ void init_algs() {
 
   triggers[SLOT_H_FL].push_back(Alg("L' U' L", 3 - RL_BOOST));
   triggers[SLOT_H_FL].push_back(Alg("L' U2 L", 3 - RL_BOOST));
-  triggers[SLOT_H_FL].push_back(Alg("L' U  L", 3 - RL_BOOST));
-  triggers[SLOT_H_FL].push_back(Alg("F  U  F'", 3));
-  triggers[SLOT_H_FL].push_back(Alg("F  U2 F'", 3));
-  triggers[SLOT_H_FL].push_back(Alg("F  U' F'", 3));
+  triggers[SLOT_H_FL].push_back(Alg("L' U L", 3 - RL_BOOST));
+  triggers[SLOT_H_FL].push_back(Alg("F U F'", 3));
+  triggers[SLOT_H_FL].push_back(Alg("F U2 F'", 3));
+  triggers[SLOT_H_FL].push_back(Alg("F U' F'", 3));
 
-  triggers[SLOT_I_BL].push_back(Alg("L  U  L'", 3 - RL_BOOST));
-  triggers[SLOT_I_BL].push_back(Alg("L  U2 L'", 3 - RL_BOOST));
-  triggers[SLOT_I_BL].push_back(Alg("L  U' L'", 3 - RL_BOOST));
+  triggers[SLOT_I_BL].push_back(Alg("L U L'", 3 - RL_BOOST));
+  triggers[SLOT_I_BL].push_back(Alg("L U2 L'", 3 - RL_BOOST));
+  triggers[SLOT_I_BL].push_back(Alg("L U' L'", 3 - RL_BOOST));
   triggers[SLOT_I_BL].push_back(Alg("B' U' B", 3));
   triggers[SLOT_I_BL].push_back(Alg("B' U2 B", 3));
-  triggers[SLOT_I_BL].push_back(Alg("B' U  B", 3));
+  triggers[SLOT_I_BL].push_back(Alg("B' U B", 3));
 
   triggers[SLOT_J_BR].push_back(Alg("R' U' R", 3 - RL_BOOST));
   triggers[SLOT_J_BR].push_back(Alg("R' U2 R", 3 - RL_BOOST));
-  triggers[SLOT_J_BR].push_back(Alg("R' U  R", 3 - RL_BOOST));
-  triggers[SLOT_J_BR].push_back(Alg("B  U  B'", 3));
-  triggers[SLOT_J_BR].push_back(Alg("B  U2 B'", 3));
-  triggers[SLOT_J_BR].push_back(Alg("B  U' B'", 3));
+  triggers[SLOT_J_BR].push_back(Alg("R' U R", 3 - RL_BOOST));
+  triggers[SLOT_J_BR].push_back(Alg("B U B'", 3));
+  triggers[SLOT_J_BR].push_back(Alg("B U2 B'", 3));
+  triggers[SLOT_J_BR].push_back(Alg("B U' B'", 3));
 
-  triggers[SLOT_K_FR].push_back(Alg("R  U  R'", 3 - RL_BOOST));
-  triggers[SLOT_K_FR].push_back(Alg("R  U2 R'", 3 - RL_BOOST));
-  triggers[SLOT_K_FR].push_back(Alg("R  U' R'", 3 - RL_BOOST));
+  triggers[SLOT_K_FR].push_back(Alg("R U R'", 3 - RL_BOOST));
+  triggers[SLOT_K_FR].push_back(Alg("R U2 R'", 3 - RL_BOOST));
+  triggers[SLOT_K_FR].push_back(Alg("R U' R'", 3 - RL_BOOST));
   triggers[SLOT_K_FR].push_back(Alg("F' U' F", 3));
   triggers[SLOT_K_FR].push_back(Alg("F' U2 F", 3));
-  triggers[SLOT_K_FR].push_back(Alg("F' U  F", 3));
-  triggers[SLOT_K_FR].push_back(Alg("R' F  R  F'", 4 - SLEDGE_BOOST));
-  triggers[SLOT_K_FR].push_back(Alg("F  R' F' R", 4 - SLEDGE_BOOST));
+  triggers[SLOT_K_FR].push_back(Alg("F' U F", 3));
+  triggers[SLOT_K_FR].push_back(Alg("R' F R F'", 4 - SLEDGE_BOOST));
+  triggers[SLOT_K_FR].push_back(Alg("F R' F' R", 4 - SLEDGE_BOOST));
 }
