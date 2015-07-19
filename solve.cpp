@@ -66,12 +66,16 @@ string constructAlg(AlgChain* leaf, int& cost) {
 int bestCostSofar = 1000; // TODO: Pass around inside the recursion.
 
 // Returns null if no solution is found.
-string solveF2LWithSkip(const cubepos& scramble, int depthRemaining, F2LSlotMask mask, AlgChain* prefix) {
+string solveF2LWithSkip(const cubepos& scramble, int depthRemaining, int costSofar, F2LSlotMask mask, AlgChain* prefix) {
+  if (costSofar > bestCostSofar) {
+    // Prune this branch.
+    return "";
+  }
   if (isSolvedUpToAUF(scramble)) {
     int cost;
     string solution = constructAlg(prefix, cost);
     if (cost <= bestCostSofar + 1) {
-      cout << "Solution:" << endl << "// Cost: " << cost << endl << solution << endl;
+      cout << "Solution:" << endl << "// Cost: " << cost << " " << costSofar << endl << solution << endl;
     }
     if (cost < bestCostSofar) {
       bestCostSofar = cost;
@@ -109,7 +113,8 @@ string solveF2LWithSkip(const cubepos& scramble, int depthRemaining, F2LSlotMask
           prefix
         };
 
-        string solution = solveF2LWithSkip(pos2, nextDepth, newMask, &link);
+        int newCost = costSofar + auf.cost_ + trigger.cost_;
+        string solution = solveF2LWithSkip(pos2, nextDepth, newCost, newMask, &link);
         // if (solution.length() > 0) {
         //   string newlySlovedSlots = slotMaskToString(slotSubtract(newMask, mask));
         //   string slotComment = "";
@@ -127,11 +132,11 @@ string solveF2LWithSkip(const cubepos& scramble, int depthRemaining, F2LSlotMask
 string solve(const cubepos& scramble) {
   // Assume cross is solved for now.
   string solution;
-  solution = solveF2LWithSkip(scramble, 1, slotMask(scramble), nullptr);
+  solution = solveF2LWithSkip(scramble, 1, 0, slotMask(scramble), nullptr);
   if (solution.length() > 0) { return solution; }
-  solution = solveF2LWithSkip(scramble, 2, slotMask(scramble), nullptr);
+  solution = solveF2LWithSkip(scramble, 2, 0, slotMask(scramble), nullptr);
   if (solution.length() > 0) { return solution; }
-  solution = solveF2LWithSkip(scramble, 3, slotMask(scramble), nullptr);
+  solution = solveF2LWithSkip(scramble, 3, 0, slotMask(scramble), nullptr);
   if (solution.length() > 0) { return solution; }
   return "Solution not found.";
 }
