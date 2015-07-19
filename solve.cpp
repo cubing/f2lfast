@@ -38,9 +38,31 @@ string slotMaskToString(F2LSlotMask mask) {
 
 const int MAX_DEPTH_PER_SLOT = 3;
 
+struct AlgChain {
+  Alg* auf;
+  Alg* trigger;
+  bool solvesSlot;
+  AlgChain* prefix;
+};
+
+string algChainToString(AlgChain* leaf) {
+  AlgChain* current = leaf;
+  string output;
+  while (true) {
+    output = (current->auf->name_) + " " + (current->trigger->name_) + (current->solvesSlot ? "\n" : " ") + output;
+    if (current->prefix == nullptr) {
+      break;
+    } else {
+      current = current->prefix;
+    }
+  }
+  return output;
+}
+
 // Returns null if no solution is found.
-string solveF2LWithSkip(const cubepos& scramble, int depthRemaining, F2LSlotMask mask) {
+string solveF2LWithSkip(const cubepos& scramble, int depthRemaining, F2LSlotMask mask, AlgChain* prefix) {
   if (isSolvedUpToAUF(scramble)) {
+    cout << "Solution:" << endl << algChainToString(prefix)  << endl;
     return ".";
   }
   else if (depthRemaining == 0) {
@@ -59,22 +81,30 @@ string solveF2LWithSkip(const cubepos& scramble, int depthRemaining, F2LSlotMask
 
         string newlySlovedSlots = "";
 
+        AlgChain link = {
+          &auf,
+          &trigger,
+          false,
+          prefix
+        };
+
         F2LSlotMask newMask = slotMask(pos2);
         int nextDepth = depthRemaining - 1;
         if (secondMaskIsSubsetOfFirst(newMask, mask)) {
           nextDepth = MAX_DEPTH_PER_SLOT;
+          link.solvesSlot = true;
           // cout << indentation[depthRemaining] << auf.name_ + string(" ") + trigger.name_  << " (" << depthRemaining << ")" << endl;
         }
 
-        string solution = solveF2LWithSkip(pos2, nextDepth, newMask);
-        if (solution.length() > 0) {
-          string newlySlovedSlots = slotMaskToString(slotSubtract(newMask, mask));
-          string slotComment = "";
-          if (newlySlovedSlots != "") {
-            slotComment = "/* " + newlySlovedSlots + "*/\n";
-          }
-          return auf.name_ + string(" ") + trigger.name_ + " " + slotComment + solution;
-        }
+        string solution = solveF2LWithSkip(pos2, nextDepth, newMask, &link);
+        // if (solution.length() > 0) {
+        //   string newlySlovedSlots = slotMaskToString(slotSubtract(newMask, mask));
+        //   string slotComment = "";
+        //   if (newlySlovedSlots != "") {
+        //     slotComment = "/* " + newlySlovedSlots + "*/\n";
+        //   }
+        //   return auf.name_ + string(" ") + trigger.name_ + " " + slotComment + solution;
+        // }
       }
     }
   }
@@ -84,11 +114,11 @@ string solveF2LWithSkip(const cubepos& scramble, int depthRemaining, F2LSlotMask
 string solve(const cubepos& scramble) {
   // Assume cross is solved for now.
   string solution;
-  solution = solveF2LWithSkip(scramble, 1, slotMask(scramble));
+  solution = solveF2LWithSkip(scramble, 1, slotMask(scramble), nullptr);
   if (solution.length() > 0) { return solution; }
-  solution = solveF2LWithSkip(scramble, 2, slotMask(scramble));
+  solution = solveF2LWithSkip(scramble, 2, slotMask(scramble), nullptr);
   if (solution.length() > 0) { return solution; }
-  solution = solveF2LWithSkip(scramble, 4, slotMask(scramble));
+  solution = solveF2LWithSkip(scramble, 4, slotMask(scramble), nullptr);
   if (solution.length() > 0) { return solution; }
   return "Solution not found.";
 }
