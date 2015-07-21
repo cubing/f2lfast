@@ -1,0 +1,153 @@
+<html>
+<head>
+  <title>ksolve-js-svg</title>
+  <style>
+    html {
+      text-align: center;
+      background: rgb(255, 245, 235);
+      margin: 1em;
+    }
+    body {
+      min-width: 500px;
+      width: 50%;
+      background: white;
+      margin: -1px auto;
+      padding: 0.5em;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    }
+  </style>
+</head>
+<body>
+
+  <button onclick="algo.value = 'LLLURRRFFFULLUULLLUUULUUDRRRDDDFFRRUUU';">Cube in Cube in Cube</button>
+  <button onclick="algo.value = 'RURRRUUURRRFRRUUURRRUUURURRRFFF';">T-Perm</button>
+  <button onclick="algo.value = 'RURRRURUURRR';">Sune</button>
+  <button onclick="algo.value = 'UUDDLLRRFFBB';">Pons Asinorum</button>
+  <br>
+  <input id="algo" style="width: 80%" value="F' R' U2 R F"/>
+  <button id="apply">Apply</button>
+  <br>
+  <button onclick="algo.value = 'U'; apply();">U</button>
+  <button onclick="algo.value = 'L'; apply();">L</button>
+  <button onclick="algo.value = 'F'; apply();">F</button>
+  <button onclick="algo.value = 'R'; apply();">R</button>
+  <button onclick="algo.value = 'B'; apply();">B</button>
+  <button onclick="algo.value = 'D'; apply();">D</button>
+  <br>
+  <button onclick="algo.value = ((puzzleSelect.value === 'pyram') ? 'UU' : 'UUU'); apply();">U'</button>
+  <button onclick="algo.value = ((puzzleSelect.value === 'pyram') ? 'LL' : 'LLL'); apply();">L'</button>
+  <button onclick="algo.value = ((puzzleSelect.value === 'pyram') ? 'FF' : 'FFF'); apply();">F'</button>
+  <button onclick="algo.value = ((puzzleSelect.value === 'pyram') ? 'RR' : 'RRR'); apply();">R'</button>
+  <button onclick="algo.value = ((puzzleSelect.value === 'pyram') ? 'BB' : 'BBB'); apply();">B'</button>
+  <button onclick="algo.value = ((puzzleSelect.value === 'pyram') ? 'DD' : 'DDD'); apply();">D'</button>
+  <br>
+  <button onclick="algo.value = 'UU'; apply();">U2</button>
+  <button onclick="algo.value = 'LL'; apply();">L2</button>
+  <button onclick="algo.value = 'FF'; apply();">F2</button>
+  <button onclick="algo.value = 'RR'; apply();">R2</button>
+  <button onclick="algo.value = 'BB'; apply();">B2</button>
+  <button onclick="algo.value = 'DD'; apply();">D2</button>
+<hr>
+
+<select id="puzzleSelect">
+  <option value="222">222</option>
+  <option value="333" selected="true">333</option>
+  <option value="pyram">pyram</option>
+</select>
+<br>
+
+<div id="puzzle">
+</div>
+
+<hr>
+<button id="solve">Solve</button><button id="stop">Stop</button>
+<br>
+<textarea id="llSkip" style="width: 90%; height: 20%; "></textarea>
+<ul id="links">
+</ul>
+<hr>
+<span id="candidate"></span>
+<textarea id="state" style="width: 50%; min-height: 80px"></textarea>
+<hr>
+<a href="https://github.com/lgarron/ksolve-js-svg">Source</a>
+
+<script src="MagicWorker.js"></script>
+<script src="worker.js"></script>
+
+<script src="lib/alg_jison.js"></script>
+<script src="lib/alg.js"></script>
+<script src="ksolve_def_parser.js"></script>
+<script src="puzzles/puzzles.js"></script>
+<script src="ksolvePuzzle.js"></script>
+<script src="f2lfast.js"></script>
+<script>
+var apply;
+var worker;
+
+var init = function() {
+  puzzleName = document.getElementById("puzzleSelect").value;
+  var kPuzzle = new ksolvePuzzle(puzzles[puzzleName].def);
+
+  document.getElementById("puzzle").innerHTML = puzzles[puzzleName].svg;
+  var svgElement = document.getElementById("puzzle").getElementsByTagName("svg")[0]
+  kPuzzle.setSVGElement(svgElement);
+
+  function updateView() {
+    kPuzzle.draw();
+    document.getElementById("state").textContent = JSON.stringify(kPuzzle.getState());
+  }
+
+  updateView();
+
+  apply = function() {
+    try {
+      kPuzzle.applyAlg(document.getElementById("algo").value);
+    } catch (e) {
+      alert(e);
+    }
+    updateView();
+  };
+
+  // var oldllSkipCallback = llSkipCallback;
+  // llSkipCallback = function(algo) {
+  //   document.getElementById("llSkip").value += algo + "\n";
+  //   oldllSkipCallback(algo);
+  // }
+
+  // var oldOllSkipCallback = ollSkipCallback;
+  // ollSkipCallback = function(algo) {
+  //   document.getElementById("candidate").textContent = "Candidate #" + numCandidates + ": " + algo;
+  //   oldOllSkipCallback(algo);
+  // }
+
+  document.getElementById("apply").onclick = apply;
+  document.getElementById("solve").onclick = function() {
+    if (worker) {
+      worker.terminate();
+      worker = null;
+    }
+  }
+  document.getElementById("solve").onclick = function() {
+
+    if (worker) {
+      worker.terminate();
+    }
+
+
+    var worker = new Worker('worker.js');
+    worker.addEventListener('message', function(e) {
+      document.getElementById("llSkip").textContent += e.data + "\n";
+      // document.getElementById("links").innerHTML += "<li><a href='https://alg.cubing.net/?type=alg&alg=" + e.data + "'>" + e.data + "</a></li>";
+    }, false);
+
+    worker.postMessage({
+      puzzle: document.getElementById("puzzleSelect").value,
+      state: kPuzzle.state_
+    });
+  };
+}
+
+document.getElementById("puzzleSelect").addEventListener("change", init);
+init();
+</script>
+</html>
