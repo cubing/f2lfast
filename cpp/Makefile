@@ -8,7 +8,7 @@ FLAGS = -DHALF -O2 -std=c++11
 TARGET = f2lfast
 
 .PHONY: all
-all: test
+all: ${TARGET}
 
 ${TARGET}: ${HEADERS} ${SOURCES} ${DEPENDENCIES}
 	g++ ${FLAGS} ${SOURCES} -o ${TARGET}
