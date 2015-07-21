@@ -1,0 +1,102 @@
+<html>
+<head>
+  <title>ksolve-js-svg</title>
+  <style>
+    html {
+      text-align: center;
+      background: rgb(255, 245, 235);
+      margin: 1em;
+    }
+    body {
+      min-width: 500px;
+      width: 50%;
+      background: white;
+      margin: -1px auto;
+      padding: 0.5em;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    }
+  </style>
+</head>
+<body>
+  <br>
+  <input id="algo" style="width: 80%" value="F' R' U2 R F"/>
+
+<hr>
+<button id="solve">Solve</button><button id="stop">Stop</button>
+<br>
+<textarea id="llSkip" style="width: 90%; height: 20%; "></textarea>
+<ul id="links">
+</ul>
+<hr>
+<script src="f2lfast-worker.js"></script>
+<script>
+var apply;
+var worker;
+
+var init = function() {
+  puzzleName = document.getElementById("puzzleSelect").value;
+  var kPuzzle = new ksolvePuzzle(puzzles[puzzleName].def);
+
+  document.getElementById("puzzle").innerHTML = puzzles[puzzleName].svg;
+  var svgElement = document.getElementById("puzzle").getElementsByTagName("svg")[0]
+  kPuzzle.setSVGElement(svgElement);
+
+  function updateView() {
+    kPuzzle.draw();
+    document.getElementById("state").textContent = JSON.stringify(kPuzzle.getState());
+  }
+
+  updateView();
+
+  apply = function() {
+    try {
+      kPuzzle.applyAlg(document.getElementById("algo").value);
+    } catch (e) {
+      alert(e);
+    }
+    updateView();
+  };
+
+  // var oldllSkipCallback = llSkipCallback;
+  // llSkipCallback = function(algo) {
+  //   document.getElementById("llSkip").value += algo + "\n";
+  //   oldllSkipCallback(algo);
+  // }
+
+  // var oldOllSkipCallback = ollSkipCallback;
+  // ollSkipCallback = function(algo) {
+  //   document.getElementById("candidate").textContent = "Candidate #" + numCandidates + ": " + algo;
+  //   oldOllSkipCallback(algo);
+  // }
+
+  document.getElementById("apply").onclick = apply;
+  document.getElementById("solve").onclick = function() {
+    if (worker) {
+      worker.terminate();
+      worker = null;
+    }
+  }
+  document.getElementById("solve").onclick = function() {
+
+    if (worker) {
+      worker.terminate();
+    }
+
+
+    var worker = new Worker('worker.js');
+    worker.addEventListener('message', function(e) {
+      document.getElementById("llSkip").textContent += e.data + "\n";
+      // document.getElementById("links").innerHTML += "<li><a href='https://alg.cubing.net/?type=alg&alg=" + e.data + "'>" + e.data + "</a></li>";
+    }, false);
+
+    worker.postMessage({
+      puzzle: document.getElementById("puzzleSelect").value,
+      state: kPuzzle.state_
+    });
+  };
+}
+
+document.getElementById("puzzleSelect").addEventListener("change", init);
+init();
+</script>
+</html>

@@ -152,3 +152,9 @@ string solve(const cubepos& scramble) {
   if (solution.length() > 0) { return solution; }
   return "Solution not found.";
 }
+
+extern "C" void solve_scramble(char* scramble) {
+  std::istringstream definitionStream(definition);
+  std::istringstream scrambleStream(state);
+  ksolve::ksolveWrapped(definitionStream, scrambleStream, "dummy", "dummy", false);
+}

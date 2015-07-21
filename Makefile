@@ -16,3 +16,22 @@ ${TARGET}: ${HEADERS} ${SOURCES} ${DEPENDENCIES}
 .PHONY: test
 test: ${TARGET}
 	./${TARGET} --test
+
+
+# Javascript options.
+JS_OPT = -O2
+JS_MEMORY = -s TOTAL_MEMORY=536870912
+JS_USE_ASM_JS = 1
+JS_FUNCTIONS = "['_solve']"
+
+.PHONY: js
+js: f2lfast-em.js
+
+f2lfast-em.js:
+	emcc -Wall \
+		$(JS_OPT) -s \
+		ASM_JS=$(JS_USE_ASM_JS) \
+		$(JS_MEMORY) \
+		-s EXPORTED_FUNCTIONS=$(JS_FUNCTIONS) \
+		-o ./f2lfast-em.js \
+		cube_solver/cubepos.cpp f2lfast.cpp
